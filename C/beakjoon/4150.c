@@ -1,53 +1,73 @@
-/*
 #include<stdio.h>
 #include<stdlib.h>
+#include<string.h>
 
-char memo[100][1000];
+char memo[10000][1001] = { 0, };
+int begin_memo[10000];
 
-char* fibo(int num){
-    int uptmep = 0, temp, i = 0, j = 0;
-    char *temp1, temp2;
+void sum(int cnt){
+    int temp = 0, uptemp = 0, j = 0;
+    char map1[1001], map2[1001];
 
-    if(num == 0)
-    {
-        memo[num][0] = '0';
-        return memo[num];
-    }
-    else if(num == 1){
-        memo[num][0] = '1';
-        return memo[num];
-    }
+    printf("R U in?%d\n",cnt);
+
+    sprintf(map1, "%01000s", memo[cnt - 1]);
+    sprintf(map2, "%01000s", memo[cnt - 2]);
+
+    printf("where U die1\n");
+
+    printf("%s\n", map1);
+    printf("%s\n", map2);
+
+    printf("size : %d\n", sizeof(map1));
     
-    if(memo[num][0]){
-        return memo[num];
-    }
-    else{
-        temp1 = fibo(num - 1);
-        temp2 = fibo(num - 2);
-        while(*(*(temp1) + i) != '\0'){
-            if(*(*(temp2) + j) != '\0'){
-                temp = *(*(temp1) + j) + *(*(temp2) + i) - 96;
-                if(temp >= 10){
-                    uptemp = 1;
-                }
-                memo[num][i] = temp + 96;
-            }
-            i++, j++;
-        }
+    for (int i = sizeof(map1) - 1; i >= 0;i--){
+        temp = map1[i] - '0' + map2[i] - '0' + uptemp;
+        uptemp = temp / 10;
+        temp %= temp;
+        memo[cnt][i] = temp + '0';
+        printf("%d : %c\n", i, memo[cnt][i]);
     }
 
-    return memo[num];
+    memo[cnt][0] = uptemp + '0';
+    printf("where U die2\n");
+
+    for ( j = 0; memo[cnt][j] == '0';j++);
+    printf("where U die3\n");
+    
+    begin_memo[cnt] = j;
+
+    printf("!!!sum : %d , %s\n", cnt, memo[cnt]+begin_memo[cnt]);
+}
+
+void fibo(int num){
+
+    printf("fibo : %d\n", num);
+
+    if(memo[num][0]){
+        printf("!!!111\n");
+        return;
+    }
+    if(num<2){
+        printf("!!!222\n");
+        memo[num][0] = num + 48;
+        return;
+    }
+    printf("fibo : %d\n", num);
+    fibo(num - 1), fibo(num - 2);
+    printf("sum : !!!!\n");
+    sum(num);
+    printf("sum done?\n");
+
+    return;  
 }
 
 int main(){
-    int num, i = 0;
-    char *result;
+    int num;
 
     scanf("%d", &num);
+    
+    fibo(num);
 
-    result = fibo(num);
-    for (int i = 0; *(*(result) + i) != '\0'; i++){
-        print("%c", *(*(result) + i));
-    }
+    printf("!! : %s", memo[num] + begin_memo[num]);
 }
-*/
