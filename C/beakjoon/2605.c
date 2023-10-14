@@ -1,72 +1,66 @@
 #include<stdio.h>
 
-int stack[101];
+int stack1[101];
+int stack2[101];
 int queue[101];
-int top = 0;
-int head = 0;
-int tail = 0;
-int size = 0;
+int top1 = 0;
+int top2 = 0;
 
-void push(int num)
+void push1(int num)
 {
-    stack[top] = num;
-    top++;
+    stack1[top1] = num;
+    top1++;
 }
 
-int pop()
+int pop1()
 {
-    return (stack[top--]);
+    return (stack1[--top1]);
 }
 
-void enque(int num) {
-	tail = (tail + 1) % 101;
-	queue[tail] = num;
-	size++;
+void push2(int num)
+{
+    stack2[top2] = num;
+    top2++;
 }
 
-int deque() {
-	head = (head + 1) % 101;
-	size--;
-	return queue[head];
+int pop2()
+{
+    return (stack2[--top2]);
 }
 
 int main(){
 
     int cnt;
     int numbers[101]={0,};
-    int temp;
-
-    int ya, si;
+    int temp1, temp2;
 
     scanf("%d", &cnt);
-    cnt--;
 
     for (int i = 0; i < cnt;i++){
-        scanf("%d ", &numbers[i]);
+
+        scanf("%d", &numbers[i]);
     }
 
     for (int j = 0; j < cnt;j++){
-        temp = numbers[j];
-        printf("num : %d\n", numbers[j]);
-        while (temp != 0)
+        temp1 = numbers[j];
+        temp2 = temp1;
+        
+        while (temp1 != 0)
         {
-            ya = pop();
-            printf("ya : %d\n", ya);
-            enque(ya);
-            temp--;
+            push2(pop1());
+            temp1--;
         }
-        j++;
-        push(j);
-        j--;
-        while(size != 0){
-            si = deque();
-            printf("si : %d\n", si);
-            push(si);
+        
+        push1(j+1);
+
+        while (temp2 != 0)
+        {
+            push1(pop2());
+            temp2--;
         }
     }
-    while (top != 0)
-    {
-        printf("%d ", pop());
+
+    for (int n = 0; n < top1;n++){
+        printf("%d ", stack1[n]);
     }
-    printf("%d", pop());
 }
