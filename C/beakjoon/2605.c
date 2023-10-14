@@ -2,7 +2,6 @@
 
 int stack1[101];
 int stack2[101];
-int queue[101];
 int top1 = 0;
 int top2 = 0;
 
