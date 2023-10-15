@@ -22,8 +22,9 @@ int main(){
             if(tempA == ' '||tempA == '\n'){
                 signal[n] = ' ';
                 break;
-                }
-                signal[n] = tempA;
+            }
+            signal[n] = tempA;
+            n++;
         }
 
         push(find_mos(signal));
@@ -85,13 +86,10 @@ char find_mos(char *signal){
                     case '-':
                         switch (signal[cnt++])
                         {
-                            switch (signal[cnt++])
-                            {
-                                case '.':
-                                    return '?';
-                                case '-':
-                                    return '2';
-                            }
+                            case '.':
+                                return '?';
+                            case '-':
+                                return '2';
                         }
                     case ' ':
                         return 'U';
@@ -226,6 +224,8 @@ char find_mos(char *signal){
                                     case '-':
                                         return '0';
                                 }
+                            case ' ':
+                                return 'O';
                         }
                     case ' ':
                         return 'M';
