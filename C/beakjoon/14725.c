@@ -2,22 +2,19 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define MAX_NODE 1000
 #define MAX_CHILDREN 26
 
 typedef struct TrieNode {
     struct TrieNode *children[MAX_CHILDREN];
-    char *name;
+    char name[16];
 } TrieNode;
 
-TrieNode nodePool[MAX_NODE];
-int nodeCnt = 0;
-
 TrieNode* newNode() {
-    for (int i = 0; i < MAX_CHILDREN; i++) {
-        nodePool[nodeCnt].children[i] = NULL;
+    TrieNode* node = (TrieNode*)malloc(sizeof(TrieNode));
+    for(int i=0; i<MAX_CHILDREN; i++) {
+        node->children[i] = NULL;
     }
-    return &nodePool[nodeCnt++];
+    return node;
 }
 
 void insert(TrieNode* root, char** words, int count) {
@@ -27,24 +24,24 @@ void insert(TrieNode* root, char** words, int count) {
         int index = words[i][0] - 'A';
         if (curr->children[index] == NULL) {
             curr->children[index] = newNode();
-            curr->children[index]->name = words[i];
+            strcpy(curr->children[index]->name, words[i]);
         }
         curr = curr->children[index];
     }
 }
 
 void printTrie(TrieNode* root, int level) {
-    if (root == NULL)
-        return;
-    
-    for (int i = 0; i < MAX_CHILDREN; ++i) { 
-        if(root->children[i]) { 
-            for(int j=0;j<level;++j){
-                printf("--");
-            }
-            printf("%s\n",root->children[i]->name);
-            printTrie(root->children[i], level+1);
-        } 
+   if(root == NULL)
+      return;
+
+   for(int i=0;i<MAX_CHILDREN;++i){
+      if(root->children[i]) { 
+         for(int j=0;j<level;++j){
+            printf("--");
+         }
+         printf("%s\n",root->children[i]->name);
+         printTrie(root->children[i], level+1);
+      } 
    }  
 }
 
