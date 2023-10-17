@@ -17,12 +17,12 @@ trie *new_trie(){
     return node;
 }
 
-void insert(char str[], trie* head){
+void insert( trie* head, char str[]){
     trie *cur = head;
     int index = 0;
     while(str[index])
     {
-        int idx = num[index] - '0';
+        int idx = str[index] - '0';
         if(cur->num[idx] == NULL){
             cur->num[idx] = new_trie();
         }
@@ -39,27 +39,28 @@ int search(trie *head, char str[]){
     trie *cur = head;
     int index = 0;
     while(str[index]){
-        idx = str[index] - '0';
+        int idx = str[index] - '0';
         cur = cur->num[idx];
 
+        
         if (cur == NULL) return 0;
+        if (cur -> end == 1) return 1;
         
         index++;
     }
 
-    return cur->end;
+    return 1;
 }
 
 int main(){
     int N, T, flag = 0;
-    char tmp_num[11];
-
-    trie*head = new_trie();
+    char tmp_num[12];
 
     scanf("%d", &N);
     for (int i = 0; i < N;i++){
-        
-        while(1)
+        trie *head = new_trie();
+        scanf("%d", &T);
+        while(T)
         {
             scanf("%s", tmp_num);
             if(!search(head,tmp_num)){
@@ -68,6 +69,14 @@ int main(){
             else{
                 flag = 1;
             }
+            T--;
+        }
+        if(flag == 1){
+            printf("NO\n");
+            flag = 0;
+        }
+        else{
+            printf("YES\n");
         }
     }
 }
