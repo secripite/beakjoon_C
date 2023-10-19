@@ -2,75 +2,75 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define MAX_CHILDREN 26
+#define NameMax 16
+#define childMAX 26
 
-typedef struct TrieNode {
-    struct TrieNode *children[MAX_CHILDREN];
-    char name[16];
-} TrieNode;
+typedef struct trie_
+{
+    struct trie_ *children[childMAX];
+    char name[NameMax];
+    int end;
+}trie;
 
-TrieNode* newNode() {
-    TrieNode* node = (TrieNode*)malloc(sizeof(TrieNode));
-    for(int i=0; i<MAX_CHILDREN; i++) {
+trie *new_node(){
+    trie *node = (trie*)malloc(sizeof(trie));
+    for (int i = 0; i < childMAX;i++){
         node->children[i] = NULL;
     }
+    node -> end =0;
     return node;
 }
+void Insert(trie *head, char **word, int level);
+void printTrie(trie *head, int level);
 
-void insert(TrieNode* root, char** words, int count) {
-    TrieNode* curr = root;
+int main(){
+    int N, K;
+    scanf("%d", &N);
 
-    for (int i = 0; i < count; i++) {
-        int index = words[i][0] - 'A';
-        if (curr->children[index] == NULL) {
-            curr->children[index] = newNode();
-            strcpy(curr->children[index]->name, words[i]);
+    trie *head = new_node();
+
+    for (int i = 0; i < N;i++){
+        scanf("%d", &K);
+        char **words = (char **)malloc(sizeof(char *) * K);
+        for (int i = 0; i < K;i++){
+            words[i] = (char *)malloc(sizeof(char) * 16);
+            scanf("%s", words[i]);
         }
-        curr = curr->children[index];
+
+        Insert(head, words, K);
+
+        for(int k=1;k<=K;++k){
+          free(words[k-1]);
+        }
+        free(words);
+    }
+
+       printTrie(head, 0);
+}
+
+void Insert(trie *head,char **word,int level){
+    trie *cur = head;
+
+    for (int i = 0; i < level;i++){
+        int index = word[i][0] - 'A';
+        if (cur->children[index]==NULL  || strcmp(cur->children[index]->name,word[i])){
+            cur->children[index] = new_node();
+            strcpy(cur->children[index]->name, word[i]);
+        }
+        cur = cur->children[index];
     }
 }
 
-void printTrie(TrieNode* root, int level) {
-   if(root == NULL)
-      return;
+void printTrie(trie *head,int level){
+    if(head == NULL) return;
 
-   for(int i=0;i<MAX_CHILDREN;++i){
-      if(root->children[i]) { 
-         for(int j=0;j<level;++j){
-            printf("--");
-         }
-         printf("%s\n",root->children[i]->name);
-         printTrie(root->children[i], level+1);
-      } 
-   }  
-}
-
-int main() {
-
-   int N;
-   scanf("%d", &N);
-
-   TrieNode* root=newNode();
-
-   for(int n=1;n<=N;++n){
-       int K;
-       scanf("%d",&K);
-       char **words=(char**)malloc(sizeof(char*)*K);
-
-       for(int k=1;k<=K;++k){
-           words[k-1]=(char*)malloc(sizeof(char)*16);
-           scanf("%s",words[k-1]);
-       }
-
-       insert(root,words,K);
-
-      // Free the allocated memory after insertion to trie.
-      for(int k=1;k<=K;++k){
-          free(words[k-1]);
-      }
-      free(words);
-   }
-
-   printTrie(root, 0);
-
+    for (int i = 0; i < childMAX; ++i){
+        if(head->children[i]){
+            for (int i = 0; i < level;i++){
+                printf("--");
+            }
+            printf("%s\n", head->children[i]->name);
+            printTrie(head->children[i], level + 1);
+        }
+    }
 }
