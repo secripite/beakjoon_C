@@ -12,46 +12,45 @@ typedef struct member
 
 members list[100000];
 
-void sort(members *list,int mem_num){
-    members temp;
+void insertionSort(members *list, int mem_num) {
+    int i, j;
+    members key;
 
-    for (int i = 0; i < mem_num;i++){
-        for (int j = 0; j < mem_num - i - 1; j++)
-        {
-            if (list[j].old>list[j+1].old){
-                temp = list[j];
-                list[j] = list[j + 1];
-                list[j + 1] = temp;
-            }
+    for (i = 1; i < mem_num; i++) {
+        key = list[i];
+        j = i - 1;
+
+        while (j >= 0 && list[j].old > key.old) {
+            list[j + 1] = list[j];
+            j = j - 1;
         }
-        for (int j = 0; j < mem_num - i - 1; j++)
-        {
-            if (list[j].old==list[j+1].old&&list[j].rank>list[j+1].rank){
-                temp = list[j];
-                list[j] = list[j + 1];
-                list[j + 1] = temp;
-            }
+        while (j >= 0 && list[j].old == key.old && list[j].rank > key.rank) {
+            list[j + 1] = list[j];
+            j = j - 1;
         }
+        list[j + 1] = key;
     }
 }
 
-int main(){
-    int N,old;
+int main() {
+    int N, old;
     char name[100];
 
     scanf("%d", &N);
 
-    for (int i = 0; i < N;i++){
+    for (int i = 0; i < N; i++) {
         scanf("%d", &old);
         scanf("%s", name);
         list[i].old = old;
         strcpy(list[i].name, name);
         list[i].rank = i;
     }
-    sort(list, N);
 
-    for (int i = 0; i < N; i++){
+    insertionSort(list, N);
+
+    for (int i = 0; i < N; i++) {
         printf("%d %s\n", list[i].old, list[i].name);
-
     }
-}   
+
+    return 0;
+}
