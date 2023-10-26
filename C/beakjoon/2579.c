@@ -15,7 +15,7 @@ int main(){
             sum += temp;
             flag = 1;
         }
-    }
+    }//you are babo :)
 
     if(flag == 1){
         printf("%d\n", sum);
