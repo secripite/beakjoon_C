@@ -20,6 +20,7 @@ trie *new_node(){
     node -> end =0;
     return node;
 }
+
 void Insert(trie *head, char **word, int level);
 void printTrie(trie *head, int level);
 
